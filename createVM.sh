@@ -2,7 +2,7 @@
 
 # -----------------MySQL Ubuntu ----------------------------------------------------
 echo "Building MySQL on Ubuntu"
-cd ubuntu1
+cd ubuntu
 docker build -t "image-mysql-ubuntu" .
 cd ..
 echo "Creating container vm-mysql-ubuntu"
@@ -16,7 +16,7 @@ docker run --name vm-mariadb -e MYSQL_ROOT_PASSWORD=root -d mariadb
 # -------------------- Mongo DB --------------------------------------------------
 
 echo "Building MongoDB"
-cd mongodb1
+cd mongodb
 docker build -t "image-mongo" .
 cd ..
 echo "Creating container vm-mongo"
