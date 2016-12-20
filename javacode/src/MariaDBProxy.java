@@ -5,16 +5,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class MySQLProxy extends DBProxy {
+public class MariaDBProxy extends DBProxy {
   
     private Connection connection = null;
     
-	public MySQLProxy() {
-		
-		username = "debian-sys-maint";
-		password = "";
-		startDB = "information_schema";
+	public MariaDBProxy() {
 		port=3306;
+		username = "root";
+		password = "root";
+		startDB = "information_schema";
 		connect("localhost");
 	}
 	@Override
@@ -161,7 +160,6 @@ public class MySQLProxy extends DBProxy {
 	}
 	@Override
 	public Object createTable(String dbName, String tbName, String columns) {
-		// TODO Auto-generated method stub
 		lastDB = dbName;
 		return this.createTable(tbName, columns);
 	}

@@ -10,6 +10,7 @@ import java.util.Map;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteResult;
 
@@ -21,10 +22,11 @@ public class MongoProxy extends DBProxy {
 	
     public MongoProxy() {
 		port=27017;
+		connect("localhost");
 	}
 	@Override
-	public boolean connect(String replicaName) {
-		String hostName = DBUtils.execCommand("./docker-ip.sh " + replicaName)[0]; 
+	public boolean connect(String hostName) {
+		//String hostName = DBUtils.execCommand("./docker-ip.sh " + replicaName)[0]; 
 		System.out.println("Mongo DB Connection");
 		try {
 			connection = new MongoClient(hostName, port);
@@ -46,11 +48,11 @@ public class MongoProxy extends DBProxy {
 	}
 
 	@Override
-	public Object createTable(String tbName, String columns) {
+	public Object createTable(String tbName, String cols) {
 		lastTable = ((DB)lastDB).getCollection(tbName);
 		
 		if (columnsForDBs.containsKey(tbName)==false)
-			columnsForDBs.put(tbName, columns.split(","));
+			columnsForDBs.put(tbName, cols.split(","));
 	
 		return (Object)lastTable;
 	}
@@ -80,6 +82,34 @@ public class MongoProxy extends DBProxy {
         ((DBCollection)lastTable).remove(removeObject);
  
        
+	}
+	@Override
+	public Object createTable(String tbName) {
+       lastTable = ((DB)lastDB).getCollection(tbName);
+		
+		if (columnsForDBs.containsKey(tbName)==false)
+			columnsForDBs.put(tbName, this.columns);
+	
+		return (Object)lastTable;
+	}
+	@Override
+	public Object createTable(String dbName, String tbName, String columns) {
+		lastDB = connection.getDB(dbName);
+		return this.createTable(tbName, columns);
+	}
+	@Override
+	public String getContent(String dbName, String tbName) {
+		String result = "";
+		BasicDBObject searchQuery = new BasicDBObject();
+		//searchQuery.put("name", "mkyong");
+
+		DBCursor cursor = ((DBCollection)lastTable).find(searchQuery);
+
+		while (cursor.hasNext()) {
+			result = result + " " + cursor.next();
+			//System.out.println(cursor.next());
+		}
+	 return result;
 	}
 }	
 
