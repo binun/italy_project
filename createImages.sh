@@ -1,7 +1,7 @@
 #!/bin/bash
-
 source ./platforms.sh
 ./rmall.sh
+
 for platform in "${platforms[@]}"
 do
    cd $platform
