@@ -1,0 +1,11 @@
+#!/bin/bash
+declare -a platforms=("fedora" "ubuntu" "mongodb")
+# ./rmall.sh
+for platform in "${platforms[@]}"
+do
+   cd $platform
+   echo $(pwd)
+   docker build -t $platform .
+   cd ..
+done
+

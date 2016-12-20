@@ -10,6 +10,6 @@ RUN dnf -y update && dnf clean all
 RUN dnf -y install mongodb mongodb-server && dnf clean all
 RUN mkdir -p /data/db
 
-EXPOSE 27017
+EXPOSE 27017 5555
 ENTRYPOINT ["/usr/bin/mongod"]
 
