@@ -10,4 +10,4 @@ do
    cd ..
 done
 
-docker pull mariadb
+#docker pull mariadb
