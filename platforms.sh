@@ -1,1 +1,1 @@
-declare -a platforms=("mariadb" "mysql" "mongodb" "cassandra")
+declare -a platforms=("mariadb" "mysql" "mongodb" "docker-cassandra")
