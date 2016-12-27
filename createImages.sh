@@ -2,11 +2,13 @@
 source ./platforms.sh
 ./rmall.sh
 
-curdir=$(pwd)
-for platform in "${platforms[@]}"
+for pi in "${!platforms[@]}"
+#for platform in "${platforms[@]}"
 do
+   platform=${platforms[$pi]}
+   subdir=${subdirs[$pi]}
    cd $platform
-   echo $(pwd)
-   docker build -t image-$platform .
-   cd $curdir
+   echo $platform/$subdir
+   #docker build -t image-$platform .
+   cd ..
 done
