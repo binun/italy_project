@@ -6,35 +6,55 @@ public class CassandraProxy extends DBProxy {
 	Session session;
 	
 	
-	public CassandraProxy() {
+	public CassandraProxy() throws ClassNotFoundException {
+		Class.forName("org.apache.cassandra.cql.jdbc.CassandraDriver");
+        
+		
 		cluster = Cluster.builder()
-				.withClusterName("myCluster")
-				.addContactPoint("localhost")
+				.addContactPoint("127.0.0.1")
 				.build();
 	}
 	@Override
 	public boolean connect(String replicaName) {
 		// Connect to the cluster and keyspace "demo"
-		session = cluster.connect(replicaName);
-		return false;
+		session = cluster.connect("test_cassandra");
+		return false;	
 	}
 
 	@Override
 	public Object createDB(String dbName) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		String query = "CREATE KEYSPACE \""+ dbName +"\"" +
+				"WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};";
+		return session.execute(query);
 	}
 
 	@Override
 	public Object createTable(String dbName, String tbName, String columns) {
 		// TODO Auto-generated method stub
-		return null;
+		String query = "CREATE TABLE " + dbName + "." + tbName + "(";
+		
+		String[] columns_arr = columns.split(" ");
+		for (int i = 0; i < columns_arr.length; i++){
+			String[] name_type = columns_arr[i].split(":");
+			String name = name_type[0], type = name_type[1];
+			
+			query += name + " " + type + " ";
+			if(i == 0)
+				query += "PRIMARY KEY";
+			if(i != columns_arr.length - 1)
+				query += ",";
+		}
+		query += ");";
+		
+		return session.execute(query);
 	}
 
 	@Override
 	public Object createTable(String dbName, String tbName) {
 		// TODO Auto-generated method stub
-		return null;
+		String query = "CREATE TABLE " + dbName + "." + tbName + "(";
+		return null;		
 	}
 
 	@Override
