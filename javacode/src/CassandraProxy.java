@@ -17,14 +17,14 @@ public class CassandraProxy extends DBProxy {
 	@Override
 	public boolean connect(String replicaName) {
 		// Connect to the cluster and keyspace "demo"
-		session = cluster.connect("test_cassandra");
+		session = cluster.connect();
 		return false;	
 	}
 
 	@Override
 	public Object createDB(String dbName) {
 		
-		String query = "CREATE KEYSPACE \""+ dbName +"\"" +
+		String query = "CREATE KEYSPACE IF NOT EXISTS \""+ dbName +"\"" +
 				"WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};";
 		return session.execute(query);
 	}

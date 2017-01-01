@@ -19,14 +19,63 @@ public abstract class DBProxy {
 	  lastTable = lt;
   }
   
-  
+  /**
+   * connect to the database driver.
+   * @param replicaName the name/IP of some replica.
+   * @return true if successfully connected, false otherwise.
+   */
   public abstract boolean connect(String replicaName);
+  
+  
+  /**
+   * Create new instance of database in the replica.
+   * @param dbName representing string of database name to be created.
+   * @return true if successfully created, false otherwise.
+   */
   public abstract Object createDB(String dbName);  
+  
+  /**
+   * Create new table in database with columns definition.
+   * @param dbName representing string of database name.
+   * @param tbName representing string of table name to be created.
+   * @param columns the definition of columns are made in that way ("name:type")+
+   * @return true if successfully created, false otherwise.
+   */
   public abstract Object createTable(String dbName, String tbName, String columns);
+  
+  /**
+   * Create new table in database.
+   * @param dbName representing string of database name.
+   * @param tbName representing string of table name to be created.
+   * @return true if successfully created, false otherwise.
+   */
   public abstract Object createTable(String dbName, String tbName);
+  
+  /**
+   * 
+   * @param tbName
+   * @return
+   */
   public abstract Object createTable(String tbName);
+  
+  /**
+   * 
+   * @param values
+   */
   public abstract void addTuple(String [] values);
+  
+  /**
+   * 
+   * @param filter
+   */
   public abstract void rmTuple(String filter);
+  
+  /**
+   * 
+   * @param dbName
+   * @param tbName
+   * @return
+   */
   public abstract String getContent(String dbName, String tbName);
   
 }
